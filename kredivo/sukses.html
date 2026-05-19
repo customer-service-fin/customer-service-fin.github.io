@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Berhasil — Kredivo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      padding: 0 28px;
+    }
+
+    .spacer-top { flex: 1; }
+    .spacer-bottom { flex: 1; }
+
+    /* Animated checkmark */
+    .check-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .circle-anim {
+      width: 120px;
+      height: 120px;
+      position: relative;
+    }
+
+    .circle-bg {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #fff0f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .check-svg {
+      animation: fadein 0.3s 0.3s ease both;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.6); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Confetti dots */
+    .dots {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: burst 0.6s 0.2s ease-out both;
+    }
+
+    @keyframes burst {
+      0% { transform: translate(0,0) scale(1); opacity: 1; }
+      100% { transform: var(--tx) scale(0); opacity: 0; }
+    }
+
+    .text-wrap {
+      text-align: center;
+      animation: slidein 0.4s 0.4s ease both;
+    }
+
+    @keyframes slidein {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    /* Info card */
+    .info-card {
+      width: 100%;
+      background: #f9f9f9;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      animation: slidein 0.4s 0.5s ease both;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      background: #fff0f1;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 2px;
+    }
+
+    .info-text span {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* Limit badge */
+    .limit-wrap {
+      width: 100%;
+      background: linear-gradient(135deg, #E5192A 0%, #ff5e6c 100%);
+      border-radius: 16px;
+      padding: 20px;
+      color: #fff;
+      text-align: center;
+      animation: slidein 0.4s 0.6s ease both;
+    }
+
+    .limit-label {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    .limit-amount {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .limit-sub {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    /* Button */
+    .btn-wrap {
+      width: 100%;
+      padding-bottom: 40px;
+      animation: slidein 0.4s 0.7s ease both;
+    }
+
+    .btn-main {
+      width: 100%;
+      height: 52px;
+      background: #E5192A;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 12px;
+    }
+
+    .btn-main:active {
+      background: #c41422;
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      height: 52px;
+      background: #f5f5f5;
+      color: #555;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:active {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="spacer-top"></div>
+
+    <div class="check-wrap" style="width:100%; gap: 24px;">
+      <div class="circle-anim">
+        <div class="circle-bg">
+          <svg class="check-svg" width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <path d="M14 28l10 10 18-20" stroke="#E5192A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <!-- burst dots -->
+        <div class="dots" id="dots"></div>
+      </div>
+
+      <div class="text-wrap">
+        <div class="title">Verifikasi Berhasil!</div>
+        <div class="subtitle">Data kamu telah kami terima dan sedang<br/>dalam proses peninjauan.</div>
+      </div>
+
+      <div class="limit-wrap">
+        <div class="limit-label">Estimasi limit kredit kamu</div>
+        <div class="limit-amount">Rp 3.000.000</div>
+        <div class="limit-sub">*Dapat berubah setelah peninjauan selesai</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-row">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke="#E5192A" stroke-width="1.5"/>
+              <path d="M10 6v5l3 2" stroke="#E5192A" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="info-text">
+            <strong>Proses 1×24 jam</strong>
+            <span>Kami akan kirim notifikasi via SMS & email</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="3" y="5" width="14" height="10" rx="2" stroke="#E5192A" stroke-width="1.5"/>
+              <path d="M3 8h14" stroke="#E5192A" stroke-width="1.5"/>
+              <circle cx="7" cy="12" r="1" fill="#E5192A"/>
+            </svg>
+          </div>
+          <div class="info-text">
+            <strong>Bayar fleksibel</strong>
+            <span>Cicilan 3, 6, 12, atau 24 bulan</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2l2.4 5 5.6.8-4 4 .9 5.5L10 15l-4.9 2.3.9-5.5-4-4 5.6-.8z" stroke="#E5192A" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="info-text">
+            <strong>0% bunga & admin</strong>
+            <span>Untuk cicilan 30 hari pertama</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer-bottom"></div>
+
+    <div class="btn-wrap">
+      <button class="btn-main" onclick="bukaApp()">
+        Mulai Belanja
+      </button>
+      <button class="btn-secondary" onclick="window.location.href='index.html'">
+        Kembali ke Beranda
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function bukaApp() {
+      // Try kredivo:// deep link first, fallback to universal link if app not installed
+      const deeplink = 'kredivo://home';
+      const fallback = 'https://kredivo.onelink.me/1553051199/homepage';
+
+      window.location.href = deeplink;
+
+      // If app not installed, fallback ke store/web setelah 1.5s
+      setTimeout(() => {
+        window.location.href = fallback;
+      }, 1500);
+    }
+
+    // Burst dots
+    const colors = ['#E5192A','#ff5e6c','#ffb3b8','#ffd6d9','#ff8a93'];
+    const positions = [
+      {x:-50,y:-50},{x:0,y:-65},{x:50,y:-50},
+      {x:65,y:0},{x:50,y:50},{x:0,y:65},
+      {x:-50,y:50},{x:-65,y:0}
+    ];
+    const container = document.getElementById('dots');
+    positions.forEach((pos, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.style.cssText = `
+        left: 50%; top: 50%;
+        background: ${colors[i % colors.length]};
+        --tx: translate(${pos.x}px, ${pos.y}px);
+        animation-delay: ${0.15 + i * 0.03}s;
+      `;
+      container.appendChild(dot);
+    });
+  </script>
+</body>
+</html>

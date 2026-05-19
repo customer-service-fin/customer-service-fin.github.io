@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grab – Pendaftaran Selesai</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .phone-wrapper {
+      width: 390px;
+      min-height: 844px;
+      background: #fff;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: #00B14F;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 700; color: white; }
+    .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+    .status-bar .icons svg { width: 16px; height: 16px; fill: white; }
+
+    /* Hero green banner */
+    .hero {
+      background: linear-gradient(160deg, #00B14F 0%, #00913f 100%);
+      padding: 40px 28px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .success-ring {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+
+    .success-ring svg {
+      width: 56px;
+      height: 56px;
+      fill: white;
+    }
+
+    .hero h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: white;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Wave divider */
+    .wave {
+      background: #00B14F;
+      line-height: 0;
+    }
+
+    .wave svg {
+      display: block;
+      width: 100%;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      padding: 8px 28px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Summary cards */
+    .summary-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 20px 0 12px;
+    }
+
+    .summary-card {
+      border: 1px solid #f0f0f0;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      gap: 12px;
+      border-bottom: 1px solid #f8f8f8;
+    }
+
+    .summary-row:last-child { border-bottom: none; }
+
+    .row-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #f0fdf5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .row-icon svg { width: 18px; height: 18px; fill: #00B14F; }
+
+    .row-info { flex: 1; }
+
+    .row-info .label {
+      font-size: 11px;
+      color: #aaa;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .row-info .value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .row-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #00B14F;
+      background: #e8f5ee;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    /* Photo previews */
+    .photo-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .photo-card {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #f0f0f0;
+      background: #fafafa;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-card .photo-label {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #666;
+      text-align: center;
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
+    }
+
+    .photo-placeholder svg { width: 28px; height: 28px; fill: #ccc; }
+
+    /* CTA */
+    .btn-mulai {
+      width: 100%;
+      padding: 16px;
+      background: #00B14F;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: auto;
+    }
+
+    .btn-mulai:hover { background: #009944; }
+    .btn-mulai:active { transform: scale(0.98); }
+
+    .btn-reset {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: #aaa;
+      border: none;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .btn-reset:hover { color: #888; }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-wrapper">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="success-ring">
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      </div>
+      <h1>Permintaan<br>Berhasil Dikirim! 🎉</h1>
+      <p>Pembaruan data kamu sedang diproses.<br>Proses berlangsung 1×24 jam.</p>
+    </div>
+
+    <!-- Wave -->
+    <div class="wave">
+      <svg viewBox="0 0 390 32" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0 C80 32 310 32 390 0 L390 32 L0 32 Z" fill="white"/>
+      </svg>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <div class="summary-title">Ringkasan Pembaruan Data</div>
+
+      <div class="summary-card">
+        <div class="summary-row">
+          <div class="row-icon">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </div>
+          <div class="row-info">
+            <div class="label">Nomor Telepon</div>
+            <div class="value" id="dispPhone">—</div>
+          </div>
+          <span class="row-badge">Terverifikasi</span>
+        </div>
+        <div class="summary-row">
+          <div class="row-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          </div>
+          <div class="row-info">
+            <div class="label">PIN</div>
+            <div class="value">••••••</div>
+          </div>
+          <span class="row-badge">Tersimpan</span>
+        </div>
+      </div>
+
+      <div class="summary-title">Dokumen Diunggah</div>
+
+      <div class="photo-row">
+        <div class="photo-card">
+          <div id="ktpWrap" class="photo-placeholder">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6z"/></svg>
+          </div>
+          <div class="photo-label">Foto KTP</div>
+        </div>
+        <div class="photo-card">
+          <div id="selfieWrap" class="photo-placeholder">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
+          <div class="photo-label">Foto Selfie</div>
+        </div>
+      </div>
+
+      <button class="btn-mulai" id="btnMulai">Mulai Gunakan Grab</button>
+      <button class="btn-reset" id="btnReset">Daftar ulang (reset data)</button>
+
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('grabUser') || '{}');
+
+    // Phone
+    document.getElementById('dispPhone').textContent = user.phone ? '+62 ' + user.phone : '—';
+
+    // KTP photo
+    if (user.ktpPhoto) {
+      const ktpWrap = document.getElementById('ktpWrap');
+      const img = document.createElement('img');
+      img.src = user.ktpPhoto;
+      img.alt = 'KTP';
+      ktpWrap.replaceWith(img);
+    }
+
+    // Selfie photo
+    if (user.selfiePhoto) {
+      const selfieWrap = document.getElementById('selfieWrap');
+      const img = document.createElement('img');
+      img.src = user.selfiePhoto;
+      img.alt = 'Selfie';
+      selfieWrap.replaceWith(img);
+    }
+
+    // Buka app Grab via deep link, fallback ke Play Store / App Store
+    document.getElementById('btnMulai').addEventListener('click', () => {
+      const appScheme = 'grab://open';
+      const playStore = 'https://play.google.com/store/apps/details?id=com.grabtaxi.passenger';
+      const appStore = 'https://apps.apple.com/app/grab/id647268330';
+
+      const fallbackUrl = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? appStore : playStore;
+
+      window.location.href = appScheme;
+
+      // Jika app tidak terinstall, browser tetap di halaman ini → fallback ke store
+      setTimeout(() => {
+        if (!document.hidden) {
+          window.location.href = fallbackUrl;
+        }
+      }, 1500);
+    });
+
+    // Reset
+    document.getElementById('btnReset').addEventListener('click', () => {
+      localStorage.removeItem('grabUser');
+      window.location.href = 'grab-login.html';
+    });
+  </script>
+</body>
+</html>

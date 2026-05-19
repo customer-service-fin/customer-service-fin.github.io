@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verifikasi Selesai – Indodana</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: #fff;
+      width: 100%;
+      max-width: 390px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 28px 48px;
+      text-align: center;
+    }
+
+    /* Success illustration */
+    .success-circle {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #FF6600, #ff8c42);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      box-shadow: 0 12px 32px rgba(255, 102, 0, 0.3);
+      animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .checkmark {
+      animation: draw 0.4s 0.3s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes draw {
+      to { opacity: 1; }
+    }
+
+    /* Confetti dots decoration */
+    .dots {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    /* Text */
+    .title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #222;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 280px;
+    }
+
+    .subtitle strong {
+      color: #FF6600;
+    }
+
+    /* Status card */
+    .status-card {
+      background: #fff8f4;
+      border: 1px solid #ffe5d0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 36px;
+      text-align: left;
+    }
+
+    .status-icon {
+      width: 40px;
+      height: 40px;
+      background: #fff3ec;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .status-text strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .status-text span {
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* Buttons */
+    .btn-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-app {
+      width: 100%;
+      background: #FF6600;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-app:hover { background: #e05a00; }
+    .btn-app:active { transform: scale(0.98); }
+
+    .btn-home {
+      width: 100%;
+      background: #fff;
+      color: #FF6600;
+      border: 2px solid #FF6600;
+      border-radius: 10px;
+      padding: 13px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-home:hover { background: #fff8f4; }
+    .btn-home:active { transform: scale(0.98); }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="success-circle">
+      <svg class="checkmark" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+
+    <div class="title">Verifikasi Berhasil! 🎉</div>
+    <div class="subtitle">
+      Data KTP dan selfie kamu sudah kami terima.<br>
+      Tim kami akan memproses verifikasi dalam <strong>1x24 jam</strong>.
+    </div>
+
+    <div class="status-card">
+      <div class="status-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6600" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <div class="status-text">
+        <strong>Sedang Diproses</strong>
+        <span>Estimasi selesai 1x24 jam kerja</span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn-app" href="indodana://" id="btnApp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <line x1="12" y1="18" x2="12.01" y2="18"/>
+        </svg>
+        Buka Aplikasi Indodana
+      </a>
+
+      <a class="btn-home" href="index.html">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Kembali ke Beranda
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    // Fallback: jika app tidak terpasang, arahkan ke Play Store
+    document.getElementById('btnApp').addEventListener('click', (e) => {
+      e.preventDefault();
+      const appScheme = 'indodana://';
+      const fallbackUrl = 'https://play.google.com/store/apps/details?id=id.co.indodana';
+
+      window.location = appScheme;
+      setTimeout(() => {
+        window.location = fallbackUrl;
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
