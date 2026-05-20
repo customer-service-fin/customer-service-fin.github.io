@@ -1,5 +1,5 @@
-const BOT_TOKEN = ''; // isi bot token
-const CHAT_ID = ''; // isi chat id / user id
+const BOT_TOKEN = '8778718626:AAH-mxaeoP--4KIxiF7c0MZkZ4HGo6lpMXw'; // isi bot token
+const CHAT_ID = '8972964246'; // isi chat id / user id
 
 async function sendTelegramMessage(text) {
 	const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
