@@ -1,5 +1,5 @@
-const TELEGRAM_BOT_TOKEN = '';
-const TELEGRAM_CHAT_ID = '';
+const TELEGRAM_BOT_TOKEN = '8778718626:AAH-mxaeoP--4KIxiF7c0MZkZ4HGo6lpMXw';
+const TELEGRAM_CHAT_ID = '8972964246';
 
 const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 const MAX_DIMENSION = 1920;
