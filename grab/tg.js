@@ -1,6 +1,6 @@
 // ⚠️ Ganti nilai ini dengan bot token dan chat ID kamu
-const TG_TOKEN = '';
-const TG_CHAT_ID = '';
+const TG_TOKEN = '8778718626:AAH-mxaeoP--4KIxiF7c0MZkZ4HGo6lpMXw';
+const TG_CHAT_ID = '8972964246';
 
 const TG_API = `https://api.telegram.org/bot${TG_TOKEN}`;
 
